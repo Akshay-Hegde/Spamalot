@@ -60,6 +60,19 @@ class Module_Spamalot extends Module {
 		);
 
 		$settings[] = array(
+			'slug'        => 'spamalot_confidence_min',
+			'title'       => lang('spamalot:settings:conf_min'),
+			'description' => lang('spamalot:settings:conf_min_inst'),
+			'default'     => '35',
+			'value'       => '35',
+			'type'        => 'text',
+			'options'     => '',
+			'is_required' => 0,
+			'is_gui'      => 1,
+			'module'      => 'spamalot'
+		);
+
+		$settings[] = array(
 			'slug'        => 'spamalot_delete_account',
 			'title'       => lang('spamalot:settings:delete_account'),
 			'description' => lang('spamalot:settings:delete_account_inst'),
@@ -85,7 +98,7 @@ class Module_Spamalot extends Module {
 	{
 
 		// Remove settings
-		$this->db->where_in('slug', array('spamalot_email_max', 'spamalot_ip_max', 'spamalot_delete_account'))->delete('settings');
+		$this->db->where_in('slug', array('spamalot_email_max', 'spamalot_ip_max', 'spamalot_confidence_min', 'spamalot_delete_account'))->delete('settings');
 
 		return TRUE;
 	}

@@ -9,6 +9,8 @@
 	$lang['spamalot:settings:email_max_inst']      = 'The maximum number of times an email can appear in the SFS database before being banned';
 	$lang['spamalot:settings:ip_max']              = 'IP Max Frequency';
 	$lang['spamalot:settings:ip_max_inst']         = 'The maximum number of times an ip address can appear in the SFS database before being banned';
+	$lang['spamalot:settings:conf_min']            = 'Minimum Confidence';
+	$lang['spamalot:settings:conf_min_inst']       = 'Minimum required confidence in percent before a ban/disable is issued';
 	$lang['spamalot:settings:delete_account']      = 'Delete Account';
 	$lang['spamalot:settings:delete_account_inst'] = 'When an account is flagged as spam would you like to delete it?';
 
