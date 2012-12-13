@@ -15,4 +15,5 @@ This module comes with a range of options and integrates seamlessly into the use
 ### TODO
 
 1. Create an admin panel to evaluate existing users and ban in one-click
-2. Add a method to remove them before they ever get added to the database/sent email
+2. Add registration page IP check
+3. Add email notifications (with option to enable/disable)
