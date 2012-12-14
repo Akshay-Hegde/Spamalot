@@ -28,6 +28,9 @@
 	$lang['spamalot:settings:conf_min_inst']       = 'Minimum required confidence in percent before a ban/disable is issued';
 	$lang['spamalot:settings:delete_account']      = 'Delete Account';
 	$lang['spamalot:settings:delete_account_inst'] = 'When an account is flagged as spam would you like to delete it?';
+	$lang['spamalot:settings:prereg']              = 'Check IP on User Pages';
+	$lang['spamalot:settings:prereg_inst']         = 'Perform an IP check before registration, login or activation';
+	$lang['spamalot:settings:cache_time']          = 'Cache Time in Seconds';
 
 	// Messages
 	$lang['spamalot:sfs_spam'] = 'Your Email or IP Address has been detected as being potentially spam related, if you feel this is in error please contact the administrator to rectify this issue.';

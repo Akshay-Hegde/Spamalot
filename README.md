@@ -14,6 +14,6 @@ This module comes with a range of options and integrates seamlessly into the use
 
 ### TODO
 
-1. Create an admin panel to evaluate existing users and ban in one-click
-2. Add registration page IP check
-3. Add email notifications (with option to enable/disable)
+1. Existing user checks
+2. One-click ban and report via their API
+3. Email notifications for the admin when a user is disabled/deleted and when a user has been reported but doesn't meet tolerances for removal

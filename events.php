@@ -10,8 +10,46 @@ class Events_Spamalot
 
 		$this->ci =& get_instance();
 		
-		// register the events
+		// Register events
 		Events::register('post_user_register', array($this, 'post_user_register'));
+		Events::register('public_controller', array($this, 'public_controller'));
+
+	}
+
+	public function public_controller()
+	{
+
+		// Load required items
+		$this->ci->load->model('spamalot/spamalot_m');
+		$this->ci->lang->load('spamalot/spamalot');
+
+		// Variables
+		$pages = array('activate', 'login', 'register');
+		$ip    = $_SERVER['REMOTE_ADDR'];
+		$cache = (int)$this->ci->settings->get('spamalot_cache_time');
+
+		// Test access on significant user pages
+		if( $this->ci->uri->rsegment(1) == 'users' and in_array($this->ci->uri->rsegment(2), $pages) )
+		{
+
+			// Check if we want to perform this check
+			if( (bool)$this->ci->settings->get('spamalot_prereg') )
+			{
+
+				// Check details
+				$spammer = $this->ci->pyrocache->model('spamalot_m', 'check_sfs', array(null, $ip), $cache);
+				
+				// Check spam result
+				if( $spammer )
+				{
+					// Update flash message
+					$this->ci->session->set_flashdata('error', lang('spamalot:sfs_spam'));
+					redirect('404');
+				}
+
+			}
+
+		}
 
 	}
 
@@ -29,11 +67,12 @@ class Events_Spamalot
 		if( $users->num_rows() )
 		{
 
-			// Get account details
-			$user = current($users->result_array());
+			// Variables
+			$user  = current($users->result_array());
+			$cache = (int)$this->ci->settings->get('spamalot_cache_time');
 
 			// Check account against stopforumspam.com
-			$spammer = $this->ci->spamalot_m->check_sfs($user['email'], $user['ip_address']);
+			$spammer = $this->ci->pyrocache->model('spamalot_m', 'check_sfs', array($user['email'], $user['ip_address']), $cache);
 
 			// Check spam result
 			if( $spammer )

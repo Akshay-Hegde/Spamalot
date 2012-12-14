@@ -73,8 +73,8 @@ class Module_Spamalot extends Module {
 			'slug'        => 'spamalot_ip_max',
 			'title'       => lang('spamalot:settings:ip_max'),
 			'description' => lang('spamalot:settings:ip_max_inst'),
-			'default'     => '3',
-			'value'       => '3',
+			'default'     => '5',
+			'value'       => '5',
 			'type'        => 'text',
 			'options'     => '',
 			'is_required' => 0,
@@ -108,6 +108,32 @@ class Module_Spamalot extends Module {
 			'module'      => 'spamalot'
 		);
 
+		$settings[] = array(
+			'slug'        => 'spamalot_prereg',
+			'title'       => lang('spamalot:settings:prereg'),
+			'description' => lang('spamalot:settings:prereg_inst'),
+			'default'     => '0',
+			'value'       => '0',
+			'type'        => 'select',
+			'options'     => '1=Yes|0=No',
+			'is_required' => 0,
+			'is_gui'      => 1,
+			'module'      => 'spamalot'
+		);
+
+		$settings[] = array(
+			'slug'        => 'spamalot_cache_time',
+			'title'       => lang('spamalot:settings:cache_time'),
+			'description' => '',
+			'default'     => '86400',
+			'value'       => '86400',
+			'type'        => 'text',
+			'options'     => '',
+			'is_required' => 0,
+			'is_gui'      => 1,
+			'module'      => 'spamalot'
+		);
+
 		// Add settings
 		foreach( $settings as $setting )
 		{
@@ -124,7 +150,14 @@ class Module_Spamalot extends Module {
 		$this->dbforge->drop_table('spamalot_log');
 
 		// Remove settings
-		$this->db->where_in('slug', array('spamalot_email_max', 'spamalot_ip_max', 'spamalot_confidence_min', 'spamalot_delete_account'))->delete('settings');
+		$this->db->where_in('slug', array(
+			'spamalot_email_max',
+			'spamalot_ip_max',
+			'spamalot_confidence_min',
+			'spamalot_delete_account',
+			'spamalot_prereg',
+			'spamalot_cache_time'
+		))->delete('settings');
 
 		return TRUE;
 	}
