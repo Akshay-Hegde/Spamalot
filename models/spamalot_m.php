@@ -2,6 +2,7 @@
 
 class spamalot_m extends MY_Model {
 
+	public $response;
 
 	public function check_sfs($email, $ip)
 	{
@@ -20,6 +21,9 @@ class spamalot_m extends MY_Model {
 		// Get API response
 		$data = file_get_contents($url);
 		$json = json_decode($data);
+
+		// Add data to response
+		$this->response = $json;
 
 		// Check response
 		if( $json->success )
@@ -52,6 +56,70 @@ class spamalot_m extends MY_Model {
 		}
 
 		return false;
+	}
+
+	public function log_action($email, $ip, $response)
+	{
+
+		// Check for existing data
+		$query = $this->db->select('id, attempts')->where('email', $email)->or_where('ip', $ip)->get('spamalot_log');
+
+		// Check for existing entries
+		if( $query->num_rows() )
+		{
+
+			$results = $query->result_array();
+
+			// Loop and update results
+			foreach( $results as $result )
+			{
+				$data = array('last_seen' => now(), 'attempts' => ( $result['attempts'] + 1 ));
+				$this->db->where('id', $result['id'])->update('spamalot_log', $data);
+			}
+
+			return true;
+		}
+
+		// Prepare new log entry
+		$data = array(
+			'first_seen' => now(),
+			'last_seen'  => now(),
+			'ip'         => $ip,
+			'email'      => $email,
+			'reported'   => 0,
+			'attempts'   => 1,
+			'email_freq' => $response->email->frequency,
+			'email_conf' => ( isset($response->email->confidence) ? $response->email->confidence : 0.00 ),
+			'ip_freq'    => $response->ip->frequency,
+			'ip_conf'    => ( isset($response->ip->confidence) ? $response->ip->confidence : 0.00 )
+		);
+
+		// Add it
+		return $this->db->insert('spamalot_log', $data);
+	}
+
+	public function log_get($start, $limit)
+	{
+
+		// Run query
+		$query = $this->db->order_by('last_seen', 'asc')
+						  ->limit($limit, $start)
+						  ->get('spamalot_log');
+
+		// Check for results
+		if( $query->num_rows() )
+		{
+			return $query->result_array();
+		}
+
+		// Nothing found
+		return array();
+	}
+
+	public function log_count()
+	{
+
+		return $this->db->get('spamalot_log')->num_rows();
 	}
 
 }

@@ -11,7 +11,8 @@ class Events_Spamalot
 		$this->ci =& get_instance();
 		
 		// register the events
-		Events::register('post_user_register', array($this, 'post_user_register'));
+		// Events::register('post_user_register', array($this, 'post_user_register'));
+		Events::register('public_controller', array($this, 'post_user_register'));
 
 	}
 
@@ -21,6 +22,8 @@ class Events_Spamalot
 		// Load required items
 		$this->ci->load->model('spamalot/spamalot_m');
 		$this->ci->lang->load('spamalot/spamalot');
+
+		$id = 1;
 		
 		// Get user information
 		$users = $this->ci->db->where('id', $id)->get('users');
@@ -32,12 +35,19 @@ class Events_Spamalot
 			// Get account details
 			$user = current($users->result_array());
 
+			// Test
+			$user['email']      = 'huhu893@lvtimeshow.com';
+			$user['ip_address'] = '27.153.247.11';
+
 			// Check account against stopforumspam.com
 			$spammer = $this->ci->spamalot_m->check_sfs($user['email'], $user['ip_address']);
 
 			// Check spam result
 			if( $spammer )
 			{
+
+				// Log action
+				$this->ci->spamalot_m->log_action($user['email'], $user['ip_address'], $this->ci->spamalot_m->response);
 
 				// Delete account?
 				if( (bool)$this->ci->settings->get('spamalot_delete_account', false) )
@@ -56,7 +66,7 @@ class Events_Spamalot
 
 				// Update flash message
 				$this->ci->session->set_flashdata('error', lang('spamalot:sfs_spam'));
-				redirect('404');
+				// redirect('404');
 
 			}
 

@@ -2,7 +2,7 @@
 
 class Module_Spamalot extends Module {
 	
-	public $version = '0.1.0';
+	public $version = '0.2.0';
 
 	public function info()
 	{
@@ -15,8 +15,8 @@ class Module_Spamalot extends Module {
 				'en' => 'Spam account detection'
 			),
 			'frontend'		=> FALSE,
-			'backend'		=> FALSE,
-			'menu'	   		=> 'utilities',
+			'backend'		=> TRUE,
+			'menu'	   		=> 'users',
 			'author'   		=> 'Jamie Holdroyd'
 		);
 		
@@ -28,6 +28,29 @@ class Module_Spamalot extends Module {
 
 		// Load language
 		$this->lang->load('spamalot/spamalot');
+
+		#################
+		## ADD LOGGING ##
+		#################
+
+		$this->db->query("CREATE TABLE IF NOT EXISTS `".SITE_REF."_spamalot_log` (
+						    `id` int(6) NOT NULL AUTO_INCREMENT,
+						    `first_seen` int(10) NOT NULL,
+						    `last_seen` int(10) NOT NULL,
+						    `ip` varchar(32) CHARACTER SET latin1 NOT NULL,
+						    `email` varchar(255) CHARACTER SET latin1 NOT NULL,
+						    `reported` tinyint(1) NOT NULL DEFAULT '0',
+						    `attempts` int(6) NOT NULL DEFAULT '0',
+						    `email_freq` int(6) NOT NULL DEFAULT '0',
+						    `email_conf` float(5,2) NOT NULL DEFAULT '0.00',
+						    `ip_freq` int(6) NOT NULL DEFAULT '0',
+						    `ip_conf` float(5,2) NOT NULL DEFAULT '0.00',
+						    PRIMARY KEY (`id`)
+						  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
+
+		##################
+		## ADD SETTINGS ##
+		##################
 
 		// Variables
 		$settings = array();
@@ -96,6 +119,9 @@ class Module_Spamalot extends Module {
 
 	public function uninstall()
 	{
+
+		// Remove tables
+		$this->dbforge->drop_table('spamalot_log');
 
 		// Remove settings
 		$this->db->where_in('slug', array('spamalot_email_max', 'spamalot_ip_max', 'spamalot_confidence_min', 'spamalot_delete_account'))->delete('settings');

@@ -4,6 +4,21 @@
 	$lang['spamalot:title'] = 'Spamalot';
 	$lang['spamalot:desc']  = 'Spam account detection';
 
+	// Logs
+	$lang['spamalot:section:logs']        = 'Account Detection Logs';
+	$lang['spamalot:label_first_seen']    = 'First Seen';
+	$lang['spamalot:label_last_seen']     = 'Last Seen';
+	$lang['spamalot:label_ip']            = 'IP Address';
+	$lang['spamalot:label_email']         = 'Email Address';
+	$lang['spamalot:label_reported']      = 'Reported';
+	$lang['spamalot:label_reported_desc'] = 'Was the account reported to StopForumSpam.com?';
+	$lang['spamalot:label_attempts']      = 'Attempts';
+	$lang['spamalot:label_email_freq']    = 'Email Frequency';
+	$lang['spamalot:label_email_conf']    = 'Email Confidence';
+	$lang['spamalot:label_ip_freq']       = 'IP Frequency';
+	$lang['spamalot:label_ip_conf']       = 'IP Confidence';
+	$lang['spamalot:label_no_logs']       = 'No Logs Found';
+
 	// Settings
 	$lang['spamalot:settings:email_max']           = 'Email Max Frequency';
 	$lang['spamalot:settings:email_max_inst']      = 'The maximum number of times an email can appear in the SFS database before being banned';
