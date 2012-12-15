@@ -7,6 +7,12 @@ class spamalot_m extends MY_Model {
 	public function sfs_check($email = null, $ip = null)
 	{
 
+		// Before continuing, check existing logs
+		if( $this->log_check($email, $ip) )
+		{
+			return true;
+		}
+
 		// Variables
 		$email = urlencode($email);
 		$ip    = urlencode($ip);
@@ -160,6 +166,18 @@ class spamalot_m extends MY_Model {
 	{
 
 		return $this->db->get('spamalot_log')->num_rows();
+	}
+
+	public function log_check($email, $ip)
+	{
+
+		// Run query
+		$query = $this->db->where('email', $email)
+						  ->or_where('ip', $ip)
+						  ->get('spamalot_log');
+
+		// Return result
+		return ( $query->num_rows() ? true : false );
 	}
 
 }

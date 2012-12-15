@@ -29,6 +29,7 @@ class Admin extends Admin_Controller
 
 		// Build the page
 		$this->template->title(lang('spamalot:title'))
+					   ->append_css('module::spamalot.css')
 					   ->build('admin/index', $this->data);
 	}
 
