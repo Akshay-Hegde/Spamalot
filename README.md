@@ -15,5 +15,5 @@ This module comes with a range of options and integrates seamlessly into the use
 ### TODO
 
 1. Existing user checks
-2. One-click ban and report via their API
+2. One-click ban for existing users that are flagged as spam
 3. Email notifications for the admin when a user is disabled/deleted and when a user has been reported but doesn't meet tolerances for removal

@@ -4,7 +4,7 @@ class spamalot_m extends MY_Model {
 
 	public $response;
 
-	public function check_sfs($email = null, $ip = null)
+	public function sfs_check($email = null, $ip = null)
 	{
 
 		// Variables
@@ -23,14 +23,14 @@ class spamalot_m extends MY_Model {
 		$url .= ( $ip != null ? "&ip={$ip}" : "" );
 
 		// Get API response
-		$data = file_get_contents($url);
-		$json = json_decode($data);
+		$json = file_get_contents($url);
+		$json = json_decode($json);
 
 		// Add data to response
 		$this->response = $json;
 
 		// Check response
-		if( $json->success )
+		if( $json != null and $json->success )
 		{
 
 			if( $email != null )
@@ -68,6 +68,33 @@ class spamalot_m extends MY_Model {
 		return false;
 	}
 
+	public function sfs_report($username, $email, $ip)
+	{
+
+		// Check reporting and get key
+		if( $key = $this->settings->get('spamalot_apikey') )
+		{
+
+			// Variables
+			$url  = "http://www.stopforumspam.com/add.php?";
+			$data = array(
+				'api_key'  => $key,
+				'username' => $username,
+				'email'    => $email,
+				'ip_addr'  => $ip
+			);
+
+			// Make request
+			$response = file_get_contents($url.http_build_query($data));
+			$response = strip_tags($response);
+
+			// Check for success
+			return ( $response == 'data submitted successfully' ? true : false );
+		}
+
+		return false;
+	}
+
 	public function log_action($email, $ip, $response)
 	{
 
@@ -87,7 +114,7 @@ class spamalot_m extends MY_Model {
 				$this->db->where('id', $result['id'])->update('spamalot_log', $data);
 			}
 
-			return true;
+			return (int)$result['id'];
 		}
 
 		// Prepare new log entry
@@ -105,7 +132,10 @@ class spamalot_m extends MY_Model {
 		);
 
 		// Add it
-		return $this->db->insert('spamalot_log', $data);
+		$this->db->insert('spamalot_log', $data);
+
+		// Send ID back
+		return (int)$this->db->insert_id();
 	}
 
 	public function log_get($start, $limit)

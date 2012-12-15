@@ -134,6 +134,19 @@ class Module_Spamalot extends Module {
 			'module'      => 'spamalot'
 		);
 
+		$settings[] = array(
+			'slug'        => 'spamalot_apikey',
+			'title'       => lang('spamalot:settings:apikey'),
+			'description' => lang('spamalot:settings:apikey_inst'),
+			'default'     => '',
+			'value'       => '',
+			'type'        => 'text',
+			'options'     => '',
+			'is_required' => 0,
+			'is_gui'      => 1,
+			'module'      => 'spamalot'
+		);
+
 		// Add settings
 		foreach( $settings as $setting )
 		{
@@ -156,7 +169,8 @@ class Module_Spamalot extends Module {
 			'spamalot_confidence_min',
 			'spamalot_delete_account',
 			'spamalot_prereg',
-			'spamalot_cache_time'
+			'spamalot_cache_time',
+			'spamalot_apikey'
 		))->delete('settings');
 
 		return TRUE;

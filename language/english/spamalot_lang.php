@@ -31,6 +31,8 @@
 	$lang['spamalot:settings:prereg']              = 'Check IP on User Pages';
 	$lang['spamalot:settings:prereg_inst']         = 'Perform an IP check before registration, login or activation';
 	$lang['spamalot:settings:cache_time']          = 'Cache Time in Seconds';
+	$lang['spamalot:settings:apikey']              = '<a href="http://www.stopforumspam.com/signup" target="_blank">StopForumSpam.com</a> API Key';
+	$lang['spamalot:settings:apikey_inst']         = 'Adding a key will automatically report spam registrations back to the database';
 
 	// Messages
 	$lang['spamalot:sfs_spam'] = 'Your Email or IP Address has been detected as being potentially spam related, if you feel this is in error please contact the administrator to rectify this issue.';

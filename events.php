@@ -37,7 +37,7 @@ class Events_Spamalot
 			{
 
 				// Check details
-				$spammer = $this->ci->pyrocache->model('spamalot_m', 'check_sfs', array(null, $ip), $cache);
+				$spammer = $this->ci->pyrocache->model('spamalot_m', 'sfs_check', array(null, $ip), $cache);
 				
 				// Check spam result
 				if( $spammer )
@@ -61,7 +61,7 @@ class Events_Spamalot
 		$this->ci->lang->load('spamalot/spamalot');
 		
 		// Get user information
-		$users = $this->ci->db->where('id', $id)->get('users');
+		$users = $this->ci->db->select('email, ip_address, username')->where('id', $id)->get('users');
 
 		// Check for results
 		if( $users->num_rows() )
@@ -72,14 +72,22 @@ class Events_Spamalot
 			$cache = (int)$this->ci->settings->get('spamalot_cache_time');
 
 			// Check account against stopforumspam.com
-			$spammer = $this->ci->pyrocache->model('spamalot_m', 'check_sfs', array($user['email'], $user['ip_address']), $cache);
+			$spammer = $this->ci->pyrocache->model('spamalot_m', 'sfs_check', array($user['email'], $user['ip_address']), $cache);
 
 			// Check spam result
 			if( $spammer )
 			{
 
 				// Log action
-				$this->ci->spamalot_m->log_action($user['email'], $user['ip_address'], $this->ci->spamalot_m->response);
+				$log_id = $this->ci->spamalot_m->log_action($user['email'], $user['ip_address'], $this->ci->spamalot_m->response);
+
+				// Report back to SFS
+				$reported = $this->ci->spamalot_m->sfs_report($user['username'], $user['email'], $user['ip_address']);
+
+				if( $log_id > 0 and $reported )
+				{
+					$this->ci->db->where('id', $log_id)->update('spamalot_log', array('reported' => 1));
+				}
 
 				// Delete account?
 				if( (bool)$this->ci->settings->get('spamalot_delete_account', false) )

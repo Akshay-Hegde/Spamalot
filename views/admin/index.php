@@ -27,7 +27,7 @@
 			<tbody>
 			<?php foreach( $logs as $log ): ?>
 				<tr>
-					<td><?php echo date('h:i m.d.Y', $log['last_seen']); ?></td>
+					<td><?php echo date('h:i d.m.Y', $log['last_seen']); ?></td>
 					<td><?php echo $log['email']; ?></td>
 					<td><?php echo $log['ip']; ?></td>
 					<td><?php echo $log['reported']; ?></td>
