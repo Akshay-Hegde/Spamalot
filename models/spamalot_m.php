@@ -101,6 +101,20 @@ class spamalot_m extends MY_Model {
 		return false;
 	}
 
+	public function log_usage($found)
+	{
+
+		// Variables
+		$date = date('d-m-Y');
+
+		// Insert or Update
+		$this->db->query("INSERT INTO `".SITE_REF."_spamalot_usage` (`date`, `requests`, `found`)
+						  VALUES ('{$date}', 1, " . ( $found == true ? 1 : 0 ) . ")
+  						  ON DUPLICATE KEY UPDATE `requests` = `requests` + 1" .
+  						  ( $found == true ? ', `found` = `found` + 1' : '' ) . ";");
+
+	}
+
 	public function log_action($email, $ip, $response)
 	{
 

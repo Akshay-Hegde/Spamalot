@@ -38,6 +38,9 @@ class Events_Spamalot
 
 				// Check details
 				$spammer = $this->ci->pyrocache->model('spamalot_m', 'sfs_check', array(null, $ip), $cache);
+
+				// Update usage log
+				$this->ci->spamalot_m->log_usage($spammer);
 				
 				// Check spam result
 				if( $spammer )
@@ -73,6 +76,9 @@ class Events_Spamalot
 
 			// Check account against stopforumspam.com
 			$spammer = $this->ci->pyrocache->model('spamalot_m', 'sfs_check', array($user['email'], $user['ip_address']), $cache);
+
+			// Update usage log
+			$this->ci->spamalot_m->log_usage($spammer);
 
 			// Check spam result
 			if( $spammer )

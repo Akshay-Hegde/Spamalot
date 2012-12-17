@@ -33,4 +33,11 @@ class Admin extends Admin_Controller
 					   ->build('admin/index', $this->data);
 	}
 
+	public function usage()
+	{
+
+		// TODO: Also this bit
+
+	}
+
 }

@@ -48,6 +48,17 @@ class Module_Spamalot extends Module {
 						    PRIMARY KEY (`id`)
 						  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
 
+		########################
+		## ADD USAGE TRACKING ##
+		########################
+
+		$this->db->query("CREATE TABLE IF NOT EXISTS `".SITE_REF."_spamalot_usage` (
+						    `date` varchar(10) COLLATE utf8_bin NOT NULL,
+						    `requests` int(6) NOT NULL DEFAULT '0',
+						    `found` int(6) NOT NULL DEFAULT '0',
+						    UNIQUE KEY `date` (`date`)
+						  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;");
+
 		##################
 		## ADD SETTINGS ##
 		##################
