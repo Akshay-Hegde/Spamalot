@@ -148,7 +148,7 @@ class spamalot_m extends MY_Model {
 	{
 
 		// Run query
-		$query = $this->db->order_by('last_seen', 'asc')
+		$query = $this->db->order_by('last_seen', 'desc')
 						  ->limit($limit, $start)
 						  ->get('spamalot_log');
 

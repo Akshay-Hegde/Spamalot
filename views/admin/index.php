@@ -32,7 +32,7 @@
 					<td class="center"><?php echo date('h:i d.m.Y', $log['last_seen']); ?></td>
 					<td<?php echo ( $log['email_freq'] >= 250 ? ' class="toxic"' : '' ); ?>><?php echo $log['email']; ?></td>
 					<td<?php echo ( $log['ip_freq'] >= 250 ? ' class="toxic"' : '' ); ?>><?php echo $log['ip']; ?></td>
-					<td><center><div class="<?php echo ( $log['reported'] == 1 ? 'tick' : 'cross' ); ?>"></div></center></td>
+					<td><center><div class="<?php echo ( (int)$log['reported'] == 1 ? 'tick' : 'cross' ); ?>"></div></center></td>
 					<td class="center"><?php echo $log['attempts']; ?></td>
 					<td class="center"><?php echo $log['email_freq']; ?></td>
 					<td class="center"><?php echo $log['email_conf']; ?>%</td>
