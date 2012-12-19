@@ -22,7 +22,7 @@
 			</thead>
 			<tfoot>
 				<tr>
-					<td colspan="10"><!-- TODO: Add Pagination --></td>
+					<td colspan="10"><?php echo $pagination['links']; ?></td>
 				</tr>
 			</tfoot>
 			<tbody>

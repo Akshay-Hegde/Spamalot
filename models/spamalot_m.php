@@ -101,6 +101,20 @@ class spamalot_m extends MY_Model {
 		return false;
 	}
 
+	public function geolocate_ip($ip)
+	{
+
+		// Variables
+		$url = 'http://www.freegeoip.net/json/';
+
+		// Perform request
+		$json = file_get_contents($url.$ip);
+		$json = json_decode($json);
+
+		// Send data back
+		return array($json->country_name, $json->region_name, $json->longitude, $json->latitude);
+	}
+
 	public function log_usage($found)
 	{
 
@@ -137,12 +151,19 @@ class spamalot_m extends MY_Model {
 			return (int)$result['id'];
 		}
 
+		// Perform geolocation lookup
+		list($country, $city, $lng, $lat) = $this->geolocate_ip($ip);
+
 		// Prepare new log entry
 		$data = array(
 			'first_seen' => now(),
 			'last_seen'  => now(),
 			'ip'         => $ip,
+			'country'    => $country,
+			'city'       => $city,
 			'email'      => $email,
+			'longitude'  => $lng,
+			'latitude'   => $lat,
 			'reported'   => 0,
 			'attempts'   => 1,
 			'email_freq' => $response->email->frequency,

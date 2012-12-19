@@ -1,4 +1,4 @@
-.tick, .cross { display: block; width: 24px; height: 24px; background: url('../img/reported.png') no-repeat 0 0; }
+.tick, .cross { display: block; width: 16px; height: 16px; background: url('../img/reported.png') no-repeat 0 0; }
 .cross { background-position: 0 100%; }
 .center { text-align: center; }
 .toxic { color: #f00; font-weight: bold; }

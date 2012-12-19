@@ -3,7 +3,7 @@
 class Admin extends Admin_Controller
 {
 	
-	public $perpage = 30;
+	public $perpage = 20;
 
     public function __construct()
     {
@@ -25,19 +25,13 @@ class Admin extends Admin_Controller
 		$this->data->logs = $this->spamalot_m->log_get($start, $this->perpage);
 
 		// Build pagination
-		// TODO: this bit
+		$total = $this->spamalot_m->log_count();
+		$this->data->pagination = create_pagination('admin/spamalot/', $total, $this->perpage, $uri_segment = 3);
 
 		// Build the page
 		$this->template->title(lang('spamalot:title'))
 					   ->append_css('module::spamalot.css')
 					   ->build('admin/index', $this->data);
-	}
-
-	public function usage()
-	{
-
-		// TODO: Also this bit
-
 	}
 
 }
