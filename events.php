@@ -51,8 +51,35 @@ class Events_Spamalot
 				}
 
 			}
-
+		} 
+		// Test all POST data
+		else if ( ! empty($_POST) )
+		{
+			// Loop POST
+			foreach ( $_POST as $key => $value )
+			{
+				// Check for valid email address
+				if ( filter_var($value, FILTER_VALIDATE_EMAIL) )
+				{
+					// Check details
+					$spammer = $this->ci->pyrocache->model('spamalot_m', 'sfs_check', array($value, $ip), $cache);
+	
+					// Update usage log
+					$this->ci->spamalot_m->log_usage($spammer);
+					
+					// Check spam result
+					if( $spammer )
+					{
+						// Update flash message
+						$this->ci->session->set_flashdata('error', lang('spamalot:sfs_spam'));
+						redirect('404');
+					}	
+				}
+			}
+			
 		}
+		
+		
 
 	}
 
